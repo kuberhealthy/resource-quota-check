@@ -1,0 +1,51 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: resource-quota-check
+  namespace: kuberhealthy
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: resource-quota-check
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["resourcequotas"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: resource-quota-check
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: resource-quota-check
+subjects:
+  - kind: ServiceAccount
+    name: resource-quota-check
+    namespace: kuberhealthy
+---
+apiVersion: kuberhealthy.github.io/v2
+kind: HealthCheck
+metadata:
+  name: resource-quota-check
+  namespace: kuberhealthy
+spec:
+  runInterval: 5m
+  timeout: 5m
+  podSpec:
+    spec:
+      serviceAccountName: resource-quota-check
+      containers:
+        - name: resource-quota-check
+          image: kuberhealthy/resource-quota-check:sha-<short-sha>
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: THRESHOLD
+              value: "0.9"
+      restartPolicy: Never
