@@ -7,7 +7,8 @@ This repository builds the container image used by Kuberhealthy to run the resou
 
 ## Image
 - `docker.io/kuberhealthy/resource-quota-check`
-- Tags: short git SHA for `main` pushes and `vX.Y.Z` for releases.
+- `ghcr.io/kuberhealthy/resource-quota-check`
+- Tags: `latest` and short git SHA for `main` pushes; `vX.Y.Z` for releases.
 
 ## Quick start
 - Apply the example manifest: `kubectl apply -f healthcheck.yaml`
