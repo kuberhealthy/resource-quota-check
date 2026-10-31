@@ -43,7 +43,7 @@ spec:
       serviceAccountName: resource-quota-check
       containers:
         - name: resource-quota-check
-          image: ghcr.io/kuberhealthy/resource-quota-check:v0.1.0
+          image: docker.io/kuberhealthy/resource-quota-check:v0.1.1
           imagePullPolicy: IfNotPresent
           env:
             - name: THRESHOLD
